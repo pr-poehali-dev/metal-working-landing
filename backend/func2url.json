@@ -1,3 +1,5 @@
 {
+  "upload-parts": "https://functions.poehali.dev/82d0889c-e7c4-429d-bdf9-1f9c2c70f008",
+  "get-parts": "https://functions.poehali.dev/1fe895cb-1796-4767-9cf4-918f239b0559",
   "send-order": "https://functions.poehali.dev/a567e3f0-5211-4e21-b986-abe4ebb9f6dc"
 }

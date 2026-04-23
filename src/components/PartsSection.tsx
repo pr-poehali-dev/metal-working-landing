@@ -1,41 +1,115 @@
 import Icon from "@/components/ui/icon";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-const PARTS = [
-  { id: 1, name: "Рабочее колесо Ø120", type: "Центробежный", size: "DN125", material: "Нержавеющая сталь", price: "от 12 400 ₽", code: "PTD-CW-120-SS" },
-  { id: 2, name: "Рабочее колесо Ø80", type: "Центробежный", size: "DN80", material: "Чугун", price: "от 5 800 ₽", code: "PTD-CW-080-CI" },
-  { id: 3, name: "Торцевое уплотнение", type: "Погружной", size: "DN50", material: "Нержавеющая сталь", price: "от 3 200 ₽", code: "PTD-MS-050-SS" },
-  { id: 4, name: "Корпус насоса К80/50", type: "Центробежный", size: "DN80", material: "Чугун", price: "от 18 900 ₽", code: "PTD-HB-080-CI" },
-  { id: 5, name: "Вал насосный Ø32", type: "Питательный", size: "DN32", material: "Легированная сталь", price: "от 7 600 ₽", code: "PTD-SH-032-AS" },
-  { id: 6, name: "Подшипниковый узел", type: "Погружной", size: "DN65", material: "Легированная сталь", price: "от 4 100 ₽", code: "PTD-BU-065-AS" },
-  { id: 7, name: "Крышка корпуса DN100", type: "Питательный", size: "DN100", material: "Нержавеющая сталь", price: "от 9 300 ₽", code: "PTD-HC-100-SS" },
-  { id: 8, name: "Диффузор ступени", type: "Многоступенчатый", size: "DN50", material: "Чугун", price: "от 6 750 ₽", code: "PTD-DF-050-CI" },
-  { id: 9, name: "Направляющий аппарат", type: "Многоступенчатый", size: "DN125", material: "Нержавеющая сталь", price: "от 14 200 ₽", code: "PTD-GA-125-SS" },
+const GET_PARTS_URL = "https://functions.poehali.dev/1fe895cb-1796-4767-9cf4-918f239b0559";
+const UPLOAD_PARTS_URL = "https://functions.poehali.dev/82d0889c-e7c4-429d-bdf9-1f9c2c70f008";
+
+const STATIC_PARTS = [
+  { id: 1, name: "Рабочее колесо Ø120", material: "Нержавеющая сталь", code: "PTD-CW-120-SS", dimensions: "Ø120", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 2, name: "Рабочее колесо Ø80", material: "Чугун", code: "PTD-CW-080-CI", dimensions: "Ø80", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 3, name: "Торцевое уплотнение", material: "Нержавеющая сталь", code: "PTD-MS-050-SS", dimensions: "DN50", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 4, name: "Корпус насоса К80/50", material: "Чугун", code: "PTD-HB-080-CI", dimensions: "DN80", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 5, name: "Вал насосный Ø32", material: "Легированная сталь", code: "PTD-SH-032-AS", dimensions: "Ø32", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 6, name: "Подшипниковый узел", material: "Легированная сталь", code: "PTD-BU-065-AS", dimensions: "DN65", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 7, name: "Крышка корпуса DN100", material: "Нержавеющая сталь", code: "PTD-HC-100-SS", dimensions: "DN100", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 8, name: "Диффузор ступени", material: "Чугун", code: "PTD-DF-050-CI", dimensions: "DN50", weight_kg: null, drawing_number: null, qty_per_pump: null },
+  { id: 9, name: "Направляющий аппарат", material: "Нержавеющая сталь", code: "PTD-GA-125-SS", dimensions: "DN125", weight_kg: null, drawing_number: null, qty_per_pump: null },
 ];
 
-const TYPES = ["Все типы", "Центробежный", "Погружной", "Питательный", "Многоступенчатый"];
-const SIZES = ["Все размеры", "DN32", "DN50", "DN65", "DN80", "DN100", "DN125"];
-const MATERIALS = ["Все материалы", "Нержавеющая сталь", "Чугун", "Легированная сталь"];
+interface Part {
+  id: number;
+  code: string | null;
+  drawing_number: string | null;
+  qty_per_pump: number | null;
+  name: string;
+  dimensions: string | null;
+  weight_kg: number | null;
+  material: string | null;
+}
 
 interface PartsSectionProps {
   scrollTo: (section: string) => void;
 }
 
 export default function PartsSection({ scrollTo }: PartsSectionProps) {
-  const [filterType, setFilterType] = useState("Центробежный");
-  const [filterSize, setFilterSize] = useState("Все размеры");
-  const [filterMaterial, setFilterMaterial] = useState("Все материалы");
+  const [parts, setParts] = useState<Part[]>(STATIC_PARTS);
+  const [fromDb, setFromDb] = useState(false);
+  const [loadingDb, setLoadingDb] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
+  const [uploadMessage, setUploadMessage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const filteredParts = PARTS.filter((p) => {
-    const okType = filterType === "Все типы" || p.type === filterType;
-    const okSize = filterSize === "Все размеры" || p.size === filterSize;
-    const okMat = filterMaterial === "Все материалы" || p.material === filterMaterial;
-    return okType && okSize && okMat;
+  useEffect(() => {
+    fetch(GET_PARTS_URL)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.parts && data.parts.length > 0) {
+          setParts(data.parts);
+          setFromDb(true);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoadingDb(false));
+  }, []);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadStatus("uploading");
+    setUploadMessage("");
+
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      const b64 = btoa(
+        new Uint8Array(ev.target!.result as ArrayBuffer).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+      try {
+        const res = await fetch(UPLOAD_PARTS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ file: b64 }),
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          setUploadStatus("success");
+          setUploadMessage(`Загружено ${data.imported} позиций`);
+          const updated = await fetch(GET_PARTS_URL).then((r) => r.json());
+          if (updated.parts?.length > 0) {
+            setParts(updated.parts);
+            setFromDb(true);
+          }
+        } else {
+          setUploadStatus("error");
+          setUploadMessage(data.error || "Ошибка загрузки");
+        }
+      } catch {
+        setUploadStatus("error");
+        setUploadMessage("Ошибка соединения");
+      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+    reader.readAsArrayBuffer(file);
+  };
+
+  const filteredParts = parts.filter((p) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      p.name.toLowerCase().includes(q) ||
+      (p.code || "").toLowerCase().includes(q) ||
+      (p.material || "").toLowerCase().includes(q) ||
+      (p.drawing_number || "").toLowerCase().includes(q)
+    );
   });
 
   return (
     <section id="Запчасти" className="py-20 border-t border-border">
       <div className="max-w-7xl mx-auto px-4">
+        {/* Header */}
         <div className="flex items-start justify-between mb-10">
           <div>
             <div className="flex items-center gap-3 mb-3">
@@ -46,114 +120,120 @@ export default function PartsSection({ scrollTo }: PartsSectionProps) {
           </div>
           <div className="font-mono-tech text-xs text-muted-foreground text-right hidden md:block">
             <div>НАЙДЕНО: {filteredParts.length} позиций</div>
-            <div className="text-primary">REV.{new Date().getFullYear()}.{String(new Date().getMonth()+1).padStart(2,"0")}</div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 border border-border bg-card">
-          <div className="font-mono-tech text-xs text-primary col-span-full mb-1">// ПАРАМЕТРЫ ФИЛЬТРАЦИИ</div>
-
-          <div>
-            <div className="font-mono-tech text-[10px] text-muted-foreground mb-2 tracking-wider">ТИП НАСОСА</div>
-            <div className="flex flex-wrap gap-1">
-              {TYPES.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setFilterType(t)}
-                  className={`font-mono-tech text-[10px] px-2 py-1 border transition-all ${
-                    filterType === t
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="font-mono-tech text-[10px] text-muted-foreground mb-2 tracking-wider">РАЗМЕР</div>
-            <div className="flex flex-wrap gap-1">
-              {SIZES.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setFilterSize(s)}
-                  className={`font-mono-tech text-[10px] px-2 py-1 border transition-all ${
-                    filterSize === s
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="font-mono-tech text-[10px] text-muted-foreground mb-2 tracking-wider">МАТЕРИАЛ</div>
-            <div className="flex flex-wrap gap-1">
-              {MATERIALS.map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setFilterMaterial(m)}
-                  className={`font-mono-tech text-[10px] px-2 py-1 border transition-all ${
-                    filterMaterial === m
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                  }`}
-                >
-                  {m}
-                </button>
-              ))}
+            <div className={fromDb ? "text-green-400" : "text-primary"}>
+              {fromDb ? "// ИЗ БАЗЫ ДАННЫХ" : `REV.${new Date().getFullYear()}.${String(new Date().getMonth()+1).padStart(2,"00")}`}
             </div>
           </div>
         </div>
 
-        {filteredParts.length === 0 ? (
+        {/* Upload + Search bar */}
+        <div className="flex flex-col md:flex-row gap-3 mb-6">
+          {/* Search */}
+          <div className="flex-1 flex items-center gap-2 border border-border bg-card px-3 py-2">
+            <Icon name="Search" size={14} className="text-muted-foreground shrink-0" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Поиск по наименованию, артикулу, материалу..."
+              className="flex-1 bg-transparent font-mono-tech text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="text-muted-foreground hover:text-foreground">
+                <Icon name="X" size={12} />
+              </button>
+            )}
+          </div>
+
+          {/* Upload Excel */}
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx,.xls"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadStatus === "uploading" || loadingDb}
+              className="flex items-center gap-2 border border-primary/40 text-primary font-mono-tech text-xs px-4 py-2 hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Icon
+                name={uploadStatus === "uploading" ? "Loader" : "FileSpreadsheet"}
+                size={13}
+                className={uploadStatus === "uploading" ? "animate-spin" : ""}
+              />
+              {uploadStatus === "uploading" ? "ЗАГРУЗКА..." : "ЗАГРУЗИТЬ EXCEL"}
+            </button>
+          </div>
+        </div>
+
+        {/* Upload status message */}
+        {uploadStatus === "success" && (
+          <div className="flex items-center gap-2 font-mono-tech text-xs text-green-400 border border-green-400/30 px-3 py-2 mb-4">
+            <Icon name="CheckCheck" size={12} />
+            // {uploadMessage}
+          </div>
+        )}
+        {uploadStatus === "error" && (
+          <div className="flex items-center gap-2 font-mono-tech text-xs text-red-400 border border-red-400/30 px-3 py-2 mb-4">
+            <Icon name="AlertCircle" size={12} />
+            // ОШИБКА: {uploadMessage}
+          </div>
+        )}
+
+        {/* Table */}
+        {loadingDb ? (
+          <div className="text-center py-16 border border-dashed border-border">
+            <Icon name="Loader" size={24} className="text-primary mx-auto mb-3 animate-spin" />
+            <div className="font-mono-tech text-xs text-muted-foreground">// ЗАГРУЗКА КАТАЛОГА...</div>
+          </div>
+        ) : filteredParts.length === 0 ? (
           <div className="text-center py-16 border border-dashed border-border">
             <Icon name="SearchX" size={32} className="text-muted-foreground mx-auto mb-3" />
             <div className="font-mono-tech text-sm text-muted-foreground">// НЕТ РЕЗУЛЬТАТОВ ПО ЗАДАННЫМ ПАРАМЕТРАМ</div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredParts.map((part) => (
-              <div
-                key={part.id}
-                className="border border-border bg-card p-5 hover:border-primary/50 transition-all duration-200 group relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 right-0 h-px bg-primary opacity-0 group-hover:opacity-60 transition-all duration-300"></div>
-
-                <div className="flex items-start justify-between mb-3">
-                  <div className="font-mono-tech text-[10px] text-muted-foreground">{part.code}</div>
-                  <span className="font-mono-tech text-[10px] border border-border px-2 py-0.5 text-muted-foreground">{part.size}</span>
-                </div>
-
-                <h3 className="font-oswald text-base font-semibold mb-3 group-hover:text-primary transition-colors">{part.name}</h3>
-
-                <div className="space-y-1 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Settings" size={10} className="text-primary/60" />
-                    <span className="font-mono-tech text-[10px] text-muted-foreground">{part.type}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icon name="Layers" size={10} className="text-primary/60" />
-                    <span className="font-mono-tech text-[10px] text-muted-foreground">{part.material}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t border-border">
-                  <span className="font-oswald text-base text-primary font-semibold">{part.price}</span>
-                  <button
-                    onClick={() => scrollTo("Контакты")}
-                    className="font-mono-tech text-[10px] border border-primary/40 text-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground transition-all"
+          <div className="border border-border overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-border bg-card">
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">ОБОЗНАЧЕНИЕ</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">№ ЧЕРТЕЖА</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap text-center">ШТ. В НАСОСЕ</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider">НАИМЕНОВАНИЕ</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">ГАБАРИТЫ, мм</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">МАССА, кг</th>
+                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider">МАТЕРИАЛ</th>
+                  <th className="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredParts.map((part, i) => (
+                  <tr
+                    key={part.id}
+                    className={`border-b border-border/50 hover:bg-primary/5 transition-colors group ${i % 2 === 0 ? "" : "bg-card/30"}`}
                   >
-                    ЗАПРОСИТЬ
-                  </button>
-                </div>
-              </div>
-            ))}
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.code || "—"}</td>
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.drawing_number || "—"}</td>
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 text-center">{part.qty_per_pump ?? "—"}</td>
+                    <td className="font-oswald text-sm text-foreground px-4 py-3 group-hover:text-primary transition-colors min-w-[200px]">{part.name}</td>
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.dimensions || "—"}</td>
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.weight_kg != null ? part.weight_kg : "—"}</td>
+                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3">{part.material || "—"}</td>
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => scrollTo("Контакты")}
+                        className="font-mono-tech text-[10px] border border-primary/40 text-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap"
+                      >
+                        ЗАПРОСИТЬ
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
