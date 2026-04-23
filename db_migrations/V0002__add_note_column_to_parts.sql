@@ -1,0 +1,1 @@
+ALTER TABLE t_p72686990_metal_working_landin.parts ADD COLUMN IF NOT EXISTS note TEXT;

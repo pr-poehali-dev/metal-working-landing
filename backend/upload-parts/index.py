@@ -48,15 +48,16 @@ def handler(event: dict, context) -> dict:
         name = str(row[3]).strip() if len(row) > 3 and row[3] is not None else None
         if not name:
             continue
-        dimensions = str(row[4]).strip() if len(row) > 4 and row[4] is not None else None
-        weight_str = row[5] if len(row) > 5 else None
+        note = str(row[4]).strip() if len(row) > 4 and row[4] is not None else None
+        dimensions = str(row[5]).strip() if len(row) > 5 and row[5] is not None else None
+        weight_str = row[6] if len(row) > 6 else None
         try:
             weight = float(weight_str) if weight_str is not None else None
         except (ValueError, TypeError):
             weight = None
-        material = str(row[6]).strip() if len(row) > 6 and row[6] is not None else None
+        material = str(row[7]).strip() if len(row) > 7 and row[7] is not None else None
 
-        parts.append((code, drawing_number, qty, name, dimensions, weight, material))
+        parts.append((code, drawing_number, qty, name, note, dimensions, weight, material))
 
     if not parts:
         return {"statusCode": 400, "headers": cors_headers, "body": json.dumps({"error": "Нет данных для импорта"})}
@@ -70,8 +71,8 @@ def handler(event: dict, context) -> dict:
     for p in parts:
         cur.execute(
             f"""INSERT INTO {schema}.parts
-                (code, drawing_number, qty_per_pump, name, dimensions, weight_kg, material)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                (code, drawing_number, qty_per_pump, name, note, dimensions, weight_kg, material)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
             p
         )
 

@@ -20,7 +20,7 @@ def handler(event: dict, context) -> dict:
     cur = conn.cursor()
 
     cur.execute(f"""
-        SELECT id, code, drawing_number, qty_per_pump, name, dimensions, weight_kg, material
+        SELECT id, code, drawing_number, qty_per_pump, name, note, dimensions, weight_kg, material
         FROM {schema}.parts
         ORDER BY id
     """)
@@ -36,9 +36,10 @@ def handler(event: dict, context) -> dict:
             "drawing_number": r[2],
             "qty_per_pump": r[3],
             "name": r[4],
-            "dimensions": r[5],
-            "weight_kg": float(r[6]) if r[6] is not None else None,
-            "material": r[7],
+            "note": r[5],
+            "dimensions": r[6],
+            "weight_kg": float(r[7]) if r[7] is not None else None,
+            "material": r[8],
         }
         for r in rows
     ]
