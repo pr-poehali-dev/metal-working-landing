@@ -22,7 +22,7 @@ interface PartsSectionProps {
 }
 
 export default function PartsSection({ scrollTo }: PartsSectionProps) {
-  const [filterType, setFilterType] = useState("Все типы");
+  const [filterType, setFilterType] = useState("Центробежный");
   const [filterSize, setFilterSize] = useState("Все размеры");
   const [filterMaterial, setFilterMaterial] = useState("Все материалы");
 
