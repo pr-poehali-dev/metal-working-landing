@@ -183,59 +183,7 @@ export default function PartsSection({ scrollTo }: PartsSectionProps) {
           </div>
         )}
 
-        {/* Table */}
-        {loadingDb ? (
-          <div className="text-center py-16 border border-dashed border-border">
-            <Icon name="Loader" size={24} className="text-primary mx-auto mb-3 animate-spin" />
-            <div className="font-mono-tech text-xs text-muted-foreground">// ЗАГРУЗКА КАТАЛОГА...</div>
-          </div>
-        ) : filteredParts.length === 0 ? (
-          <div className="text-center py-16 border border-dashed border-border">
-            <Icon name="SearchX" size={32} className="text-muted-foreground mx-auto mb-3" />
-            <div className="font-mono-tech text-sm text-muted-foreground">// НЕТ РЕЗУЛЬТАТОВ ПО ЗАДАННЫМ ПАРАМЕТРАМ</div>
-          </div>
-        ) : (
-          <div className="border border-border overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border bg-card">
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">ОБОЗНАЧЕНИЕ</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">№ ЧЕРТЕЖА</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap text-center">ШТ. В НАСОСЕ</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider">НАИМЕНОВАНИЕ</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">ГАБАРИТЫ, мм</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider whitespace-nowrap">МАССА, кг</th>
-                  <th className="font-mono-tech text-[10px] text-primary px-4 py-3 tracking-wider">МАТЕРИАЛ</th>
-                  <th className="px-4 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredParts.map((part, i) => (
-                  <tr
-                    key={part.id}
-                    className={`border-b border-border/50 hover:bg-primary/5 transition-colors group ${i % 2 === 0 ? "" : "bg-card/30"}`}
-                  >
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.code || "—"}</td>
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.drawing_number || "—"}</td>
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 text-center">{part.qty_per_pump ?? "—"}</td>
-                    <td className="font-oswald text-sm text-foreground px-4 py-3 group-hover:text-primary transition-colors min-w-[200px]">{part.name}</td>
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.dimensions || "—"}</td>
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3 whitespace-nowrap">{part.weight_kg != null ? part.weight_kg : "—"}</td>
-                    <td className="font-mono-tech text-[11px] text-muted-foreground px-4 py-3">{part.material || "—"}</td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => scrollTo("Контакты")}
-                        className="font-mono-tech text-[10px] border border-primary/40 text-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap"
-                      >
-                        ЗАПРОСИТЬ
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+
 
         <div className="mt-6 text-center">
           <button
