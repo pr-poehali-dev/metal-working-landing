@@ -43,7 +43,10 @@ export default function ContactsSection() {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="border border-border bg-card p-6">
-              <div className="font-mono-tech text-xs text-primary mb-4">// ЗАПРОС КОММЕРЧЕСКОГО ПРЕДЛОЖЕНИЯ</div>
+              <div className="font-mono-tech text-xs text-primary mb-2">// ЗАПРОС КОММЕРЧЕСКОГО ПРЕДЛОЖЕНИЯ</div>
+              <div className="font-mono-tech text-[10px] text-muted-foreground border-l-2 border-primary/40 pl-2 mb-4">
+                Срок изготовления 90 к.д. отсчитывается с момента внесения предоплаты
+              </div>
               {formStatus === "success" ? (
                 <div className="flex flex-col items-center justify-center py-12 gap-4">
                   <div className="w-12 h-12 border border-green-500 flex items-center justify-center">
