@@ -1,10 +1,10 @@
 import Icon from "@/components/ui/icon";
 
 const STATS = [
-  { value: "18+", label: "лет на рынке" },
-  { value: "3 200", label: "наименований в каталоге" },
-  { value: "96%", label: "совместимость с OEM" },
-  { value: "48 ч", label: "средний срок доставки" },
+  { value: "18+", label: "лет в производстве валов" },
+  { value: "0.005", label: "мм допуск на диаметр" },
+  { value: "100%", label: "контроль ОТК каждого вала" },
+  { value: "14 дн", label: "средний срок изготовления" },
 ];
 
 interface HeroSectionProps {
@@ -29,21 +29,21 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
         <div>
           <div className="flex items-center gap-3 mb-6 animate-fade-up">
             <div className="h-px w-8 bg-primary"></div>
-            <span className="font-mono-tech text-xs text-primary tracking-widest">// ПРОМЫШЛЕННЫЕ ЗАПЧАСТИ</span>
+            <span className="font-mono-tech text-xs text-primary tracking-widest">// ПРОИЗВОДСТВО ВАЛОВ ПОД ЗАКАЗ</span>
           </div>
 
           <h1 className="font-oswald text-5xl md:text-7xl font-bold leading-none tracking-tight mb-6 animate-fade-up-delay-1">
-            <span className="text-foreground">ЗАПЧАСТИ</span>
+            <span className="text-foreground">ВАЛЫ</span>
             <br />
-            <span className="text-primary">ДЛЯ НАСОСОВ</span>
+            <span className="text-primary">ДЛЯ КОНДЕНСАТНЫХ</span>
             <br />
-            <span className="text-foreground text-3xl md:text-4xl font-light">любой сложности</span>
+            <span className="text-foreground text-3xl md:text-4xl font-light">насосов</span>
           </h1>
 
           <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md animate-fade-up-delay-2">
-            Производство и поставка запасных частей для промышленных насосов.
-            Центробежные, погружные, вихревые и многоступенчатые насосы.
-            Допуски по ISO 9906.
+            Изготовление насосных валов по чертежам заказчика или образцу.
+            Конденсатные, питательные и сетевые насосы.
+            Точность по ГОСТ 24643, допуски от 0.005 мм.
           </p>
 
           <div className="flex flex-wrap gap-3 animate-fade-up-delay-3">
@@ -52,7 +52,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
               className="flex items-center gap-2 bg-primary text-primary-foreground font-oswald tracking-widest text-sm px-6 py-3 hover:opacity-90 transition-opacity"
             >
               <Icon name="Search" size={14} />
-              КАТАЛОГ ЗАПЧАСТЕЙ
+              КАТАЛОГ ВАЛОВ
             </button>
             <button
               onClick={() => scrollTo("Контакты")}
@@ -85,7 +85,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
             <div className="absolute bottom-4 left-4 right-4 bg-background/90 border border-border p-3">
               <div className="font-mono-tech text-xs text-primary mb-1">// SCAN COMPLETE</div>
               <div className="grid grid-cols-3 gap-2">
-                {["ISO 9906", "ГОСТ Р 52743", "EN 809"].map((std) => (
+                {["ГОСТ 24643", "ГОСТ 31606", "ISO 286"].map((std) => (
                   <div key={std} className="text-center border border-border/50 py-1">
                     <div className="font-mono-tech text-[10px] text-muted-foreground">{std}</div>
                   </div>

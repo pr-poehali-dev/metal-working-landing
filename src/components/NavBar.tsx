@@ -20,7 +20,7 @@ export default function NavBar({ activeSection, scrollTo, mobileMenuOpen, setMob
           </div>
           <div>
             <div className="font-oswald text-sm font-semibold tracking-widest text-foreground leading-none">ПРОМТЕХДЕТАЛЬ</div>
-            <div className="font-mono-tech text-[9px] text-muted-foreground tracking-wider">PUMP PARTS & METALWORKS</div>
+            <div className="font-mono-tech text-[9px] text-muted-foreground tracking-wider">ВАЛЫ ДЛЯ КОНДЕНСАТНЫХ НАСОСОВ</div>
           </div>
         </div>
 

@@ -124,7 +124,7 @@ export default function PartsSection({ scrollTo }: PartsSectionProps) {
               <div className="h-px w-8 bg-primary"></div>
               <span className="font-mono-tech text-xs text-primary tracking-widest">// КАТАЛОГ</span>
             </div>
-            <h2 className="font-oswald text-4xl font-bold tracking-tight">ЗАПЧАСТИ ДЛЯ НАСОСОВ</h2>
+            <h2 className="font-oswald text-4xl font-bold tracking-tight">КАТАЛОГ ВАЛОВ</h2>
           </div>
           <div className="font-mono-tech text-xs text-muted-foreground text-right hidden md:block">
             <div>НАЙДЕНО: {filteredParts.length} позиций</div>
@@ -142,7 +142,7 @@ export default function PartsSection({ scrollTo }: PartsSectionProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Поиск по наименованию, материалу, примечанию..."
+              placeholder="Поиск по наименованию вала, чертежу, материалу..."
               className="flex-1 bg-transparent font-mono-tech text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
             />
             {searchQuery && (
@@ -233,7 +233,7 @@ export default function PartsSection({ scrollTo }: PartsSectionProps) {
             onClick={() => scrollTo("Контакты")}
             className="font-mono-tech text-xs text-muted-foreground border border-dashed border-border px-6 py-3 hover:border-primary hover:text-primary transition-all"
           >
-            // НЕТ НУЖНОЙ ПОЗИЦИИ? ЗАПРОСИТЬ ПОДБОР →
+            // НЕТ НУЖНОГО ВАЛА? ЗАПРОСИТЬ ИЗГОТОВЛЕНИЕ ПО ЧЕРТЕЖУ →
           </button>
         </div>
       </div>

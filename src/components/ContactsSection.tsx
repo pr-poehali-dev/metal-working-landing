@@ -83,7 +83,7 @@ export default function ContactsSection() {
                       rows={4}
                       value={formMessage}
                       onChange={(e) => setFormMessage(e.target.value)}
-                      placeholder="Укажите тип насоса, наименование детали или артикул..."
+                      placeholder="Укажите тип насоса, номер чертежа или пришлите образец..."
                       className="w-full bg-background border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors resize-none"
                     />
                   </div>
@@ -128,7 +128,7 @@ export default function ContactsSection() {
               <div className="border border-border bg-card p-5">
                 <div className="font-mono-tech text-[10px] text-primary mb-3 tracking-wider">// ДОКУМЕНТАЦИЯ</div>
                 <div className="space-y-2">
-                  {["Сертификат ISO 9001", "ГОСТ Р 52743-2007", "Декларация соответствия"].map((doc) => (
+                  {["Сертификат ISO 9001", "ГОСТ 24643-81", "Декларация соответствия"].map((doc) => (
                     <div key={doc} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer">
                       <Icon name="FileCheck" size={12} className="text-primary/60" />
                       <span>{doc}</span>
@@ -139,9 +139,9 @@ export default function ContactsSection() {
 
               <div className="border border-primary/30 bg-card p-4 font-mono-tech text-xs">
                 <div className="text-primary/60 mb-2">$ status --production</div>
-                <div className="text-muted-foreground">Склад: <span className="text-green-400">ONLINE</span></div>
+                <div className="text-muted-foreground">Станки ЧПУ: <span className="text-green-400">РАБОТАЮТ</span></div>
                 <div className="text-muted-foreground">Производство: <span className="text-green-400">АКТИВНО</span></div>
-                <div className="text-muted-foreground">Доставка: <span className="text-primary">48 часов</span></div>
+                <div className="text-muted-foreground">Срок изготовления: <span className="text-primary">от 14 дней</span></div>
                 <div className="flex items-center gap-1 mt-2 text-primary">
                   <span>$</span>
                   <span className="animate-blink">_</span>
@@ -155,7 +155,7 @@ export default function ContactsSection() {
       <footer className="border-t border-border py-6">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="font-mono-tech text-xs text-muted-foreground">
-            © 2024 ПромТехДеталь — Запчасти для насосов
+            © 2024 ПромТехДеталь — Валы для конденсатных насосов
           </div>
           <div className="font-mono-tech text-xs text-muted-foreground">
             v1.0.0 // BUILD {new Date().getFullYear()}.{String(new Date().getMonth()+1).padStart(2,"0")}

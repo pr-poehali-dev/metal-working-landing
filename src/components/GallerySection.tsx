@@ -3,18 +3,18 @@ import Icon from "@/components/ui/icon";
 const GALLERY = [
   {
     src: "https://cdn.poehali.dev/projects/cefcff8e-8f75-492a-9553-1c18c82cffe4/files/3737437c-9c5c-4652-8d5b-abc4a154cfde.jpg",
-    title: "Прецизионные компоненты",
-    desc: "Рабочие колёса и фланцы из нержавеющей стали"
+    title: "Готовые валы",
+    desc: "Насосные валы из легированной стали 40Х и нержавейки 12Х18Н10Т"
   },
   {
     src: "https://cdn.poehali.dev/projects/cefcff8e-8f75-492a-9553-1c18c82cffe4/files/6467335a-ceeb-4e6e-be61-a35f736316b3.jpg",
-    title: "Производственный цех",
-    desc: "Токарная обработка насосных валов на станках с ЧПУ"
+    title: "Токарная обработка",
+    desc: "Финишная обработка посадочных мест на станках с ЧПУ"
   },
   {
     src: "https://cdn.poehali.dev/projects/cefcff8e-8f75-492a-9553-1c18c82cffe4/files/80edde49-a905-47c4-a308-8d0f010d31ef.jpg",
-    title: "Инженерные решения",
-    desc: "Конструктивный разрез центробежного насоса"
+    title: "Контроль качества",
+    desc: "Измерение биения и посадочных диаметров на координатной машине"
   },
 ];
 
@@ -26,7 +26,7 @@ export default function GallerySection() {
           <div className="h-px w-8 bg-primary"></div>
           <span className="font-mono-tech text-xs text-primary tracking-widest">// ПРОИЗВОДСТВО</span>
         </div>
-        <h2 className="font-oswald text-4xl font-bold tracking-tight mb-10">ГАЛЕРЕЯ</h2>
+        <h2 className="font-oswald text-4xl font-bold tracking-tight mb-10">ПРОИЗВОДСТВО</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {GALLERY.map((item, i) => (
@@ -51,10 +51,10 @@ export default function GallerySection() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10">
           {[
-            { icon: "Ruler", label: "Допуски до 0.01 мм" },
-            { icon: "ShieldCheck", label: "Входной контроль ОТК" },
-            { icon: "Timer", label: "Срочное производство" },
-            { icon: "Repeat", label: "Серийный выпуск" },
+            { icon: "Ruler", label: "Допуск на диаметр от 0.005 мм" },
+            { icon: "ShieldCheck", label: "ОТК — 100% каждого вала" },
+            { icon: "FileText", label: "Изготовление по чертежу или образцу" },
+            { icon: "Repeat", label: "Серийный и единичный выпуск" },
           ].map((cap) => (
             <div key={cap.label} className="border border-border bg-card/50 p-4 flex items-center gap-3">
               <Icon name={cap.icon} fallback="Circle" size={18} className="text-primary shrink-0" />
