@@ -4,7 +4,7 @@ const STATS = [
   { value: "18+", label: "лет в производстве валов" },
   { value: "0.01", label: "мм допуск на диаметр" },
   { value: "100%", label: "контроль ОТК каждого вала" },
-  { value: "14 дн", label: "средний срок изготовления" },
+  { value: "3.5 м", label: "максимальная длина вала" },
 ];
 
 interface HeroSectionProps {
@@ -42,7 +42,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
 
           <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md animate-fade-up-delay-2">
             Изготовление насосных валов по чертежам заказчика или образцу.
-            Марки стали: 40Х, 40ХФА, Ст.45, 45ХГМА.
+            Длина до 3,5 метров. Марки стали: 40Х, 40ХФА, Ст.45, 45ХГМА.
             Точность по ГОСТ 24643, допуски от 0.01 мм.
           </p>
 
