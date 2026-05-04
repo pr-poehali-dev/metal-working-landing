@@ -2,7 +2,7 @@ import Icon from "@/components/ui/icon";
 
 const STATS = [
   { value: "18+", label: "лет в производстве валов" },
-  { value: "0.005", label: "мм допуск на диаметр" },
+  { value: "0.01", label: "мм допуск на диаметр" },
   { value: "100%", label: "контроль ОТК каждого вала" },
   { value: "14 дн", label: "средний срок изготовления" },
 ];
@@ -43,7 +43,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
           <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md animate-fade-up-delay-2">
             Изготовление насосных валов по чертежам заказчика или образцу.
             Конденсатные, питательные и сетевые насосы.
-            Точность по ГОСТ 24643, допуски от 0.005 мм.
+            Точность по ГОСТ 24643, допуски от 0.01 мм.
           </p>
 
           <div className="flex flex-wrap gap-3 animate-fade-up-delay-3">

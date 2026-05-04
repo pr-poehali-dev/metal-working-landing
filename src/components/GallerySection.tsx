@@ -51,7 +51,7 @@ export default function GallerySection() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10">
           {[
-            { icon: "Ruler", label: "Допуск на диаметр от 0.005 мм" },
+            { icon: "Ruler", label: "Допуск на диаметр от 0.01 мм" },
             { icon: "ShieldCheck", label: "ОТК — 100% каждого вала" },
             { icon: "FileText", label: "Изготовление по чертежу или образцу" },
             { icon: "Repeat", label: "Серийный и единичный выпуск" },
