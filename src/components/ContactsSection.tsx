@@ -141,7 +141,7 @@ export default function ContactsSection() {
                 <div className="text-primary/60 mb-2">$ status --production</div>
                 <div className="text-muted-foreground">Станки ЧПУ: <span className="text-green-400">РАБОТАЮТ</span></div>
                 <div className="text-muted-foreground">Производство: <span className="text-green-400">АКТИВНО</span></div>
-                <div className="text-muted-foreground">Срок изготовления: <span className="text-primary">от 14 дней</span></div>
+                <div className="text-muted-foreground">Срок изготовления: <span className="text-primary">90 к.д.</span></div>
                 <div className="flex items-center gap-1 mt-2 text-primary">
                   <span>$</span>
                   <span className="animate-blink">_</span>

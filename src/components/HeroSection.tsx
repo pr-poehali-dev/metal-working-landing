@@ -5,6 +5,7 @@ const STATS = [
   { value: "0.01", label: "мм допуск на диаметр" },
   { value: "100%", label: "контроль ОТК каждого вала" },
   { value: "3.5 м", label: "максимальная длина вала" },
+  { value: "90 к.д.", label: "срок изготовления" },
 ];
 
 interface HeroSectionProps {
