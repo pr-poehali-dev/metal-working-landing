@@ -42,7 +42,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
 
           <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md animate-fade-up-delay-2">
             Изготовление насосных валов по чертежам заказчика или образцу.
-            Конденсатные, питательные и сетевые насосы.
+            Марки стали: 40Х, 40ХФА, Ст.45, 45ХГМА.
             Точность по ГОСТ 24643, допуски от 0.01 мм.
           </p>
 

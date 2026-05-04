@@ -4,7 +4,7 @@ const GALLERY = [
   {
     src: "https://cdn.poehali.dev/projects/cefcff8e-8f75-492a-9553-1c18c82cffe4/files/3737437c-9c5c-4652-8d5b-abc4a154cfde.jpg",
     title: "Готовые валы",
-    desc: "Насосные валы из легированной стали 40Х и нержавейки 12Х18Н10Т"
+    desc: "Марки стали: 40Х, 40ХФА, Ст.45, 45ХГМА — под требования заказчика"
   },
   {
     src: "https://cdn.poehali.dev/projects/cefcff8e-8f75-492a-9553-1c18c82cffe4/files/6467335a-ceeb-4e6e-be61-a35f736316b3.jpg",
