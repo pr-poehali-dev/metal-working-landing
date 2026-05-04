@@ -46,6 +46,7 @@ export default function ContactsSection() {
               <div className="font-mono-tech text-xs text-primary mb-2">// ЗАПРОС КОММЕРЧЕСКОГО ПРЕДЛОЖЕНИЯ</div>
               <div className="font-mono-tech text-[10px] text-muted-foreground border-l-2 border-primary/40 pl-2 mb-4 space-y-1">
                 <div>Предоплата — 50% от стоимости заказа</div>
+                <div>Остаток 50% — в течение 3 к.д. после уведомления о готовности вала</div>
                 <div>Срок изготовления 90 к.д. отсчитывается с момента внесения предоплаты</div>
               </div>
               {formStatus === "success" ? (
